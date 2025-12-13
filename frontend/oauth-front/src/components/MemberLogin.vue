@@ -72,7 +72,8 @@ export default {
                 email : this.email,
                 password : this.password
             }
-            const response = await axios.post("http://localhost:8080/member/doLogin", loginData);
+            // const response = await axios.post("http://localhost:8080/member/doLogin", loginData);
+            const response = await axios.post("http://localhost:8080/auth/email", loginData);
             const token = response.data.token;
             localStorage.setItem("token", token);
             window.location.href = "/";

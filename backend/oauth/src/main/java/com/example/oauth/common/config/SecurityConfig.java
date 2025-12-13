@@ -1,8 +1,8 @@
 package com.example.oauth.common.config;
 
-import com.example.oauth.common.auth.JwtAutenticationHandler;
-import com.example.oauth.common.auth.JwtAuthorizationHandler;
-import com.example.oauth.common.auth.JwtTokenFilter;
+import com.example.oauth.common.auth.original.JwtAutenticationHandler;
+import com.example.oauth.common.auth.original.JwtAuthorizationHandler;
+import com.example.oauth.common.auth.original.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 .accessDeniedHandler(jwtAuthorizationHandler) // 403의 경우
                 )
 
-                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin", "/member/google/doLogin", "/member/kakao/doLogin").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin", "/auth/**", "/member/google/doLogin", "/member/kakao/doLogin").permitAll().anyRequest().authenticated())
                 .build();
     }
     // Todo - 프론트 연결
