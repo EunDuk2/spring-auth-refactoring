@@ -6,7 +6,6 @@ import com.example.oauth.member.dto.MemberCreateDto;
 import com.example.oauth.member.dto.MemberLoginDto;
 import com.example.oauth.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
