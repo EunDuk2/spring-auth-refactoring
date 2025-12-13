@@ -1,6 +1,5 @@
-package com.example.oauth.common.auth;
+package com.example.oauth.common.auth.original;
 
-import com.example.oauth.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
