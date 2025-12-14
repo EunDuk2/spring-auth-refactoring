@@ -44,4 +44,38 @@ public class AuthController {
         return new ResponseEntity<>(loginInfo, HttpStatus.OK);
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody RedirectDto dto) {
+        // 0. type 결정
+        AuthService authService = authServiceStrategy.get("googleAuthService");
+
+        // 1. login 검증
+        Member member = authService.login(dto);
+
+        // 2. 토큰 발급
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+        Map<String, Object> loginInfo = new HashMap<>();
+        loginInfo.put("id", member.getId());
+        loginInfo.put("token", jwtToken);
+
+        return new ResponseEntity<>(loginInfo, HttpStatus.OK);
+    }
+
+    @PostMapping("/kakao")
+    public ResponseEntity<?> kakaoLogin(@RequestBody RedirectDto dto) {
+        // 0. type 결정
+        AuthService authService = authServiceStrategy.get("kakaoAuthService");
+
+        // 1. login 검증
+        Member member = authService.login(dto);
+
+        // 2. 토큰 발급
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+        Map<String, Object> loginInfo = new HashMap<>();
+        loginInfo.put("id", member.getId());
+        loginInfo.put("token", jwtToken);
+
+        return new ResponseEntity<>(loginInfo, HttpStatus.OK);
+    }
+
 }
