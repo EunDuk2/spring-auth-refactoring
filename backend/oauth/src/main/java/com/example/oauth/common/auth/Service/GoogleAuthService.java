@@ -3,9 +3,9 @@ package com.example.oauth.common.auth.Service;
 import com.example.oauth.member.domain.Member;
 import com.example.oauth.member.domain.SocialType;
 import com.example.oauth.member.dto.AccessTokenDto;
-import com.example.oauth.member.dto.GoogleProfileDto;
+import com.example.oauth.common.auth.dto.GoogleProfileDto;
 import com.example.oauth.member.dto.MemberOauthCreateReqDto;
-import com.example.oauth.member.dto.RedirectDto;
+import com.example.oauth.common.auth.dto.OauthLoginDto;
 import com.example.oauth.member.repository.MemberRepository;
 import com.example.oauth.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
-@Service
-public class GoogleAuthService implements AuthService {
+@Service("google")
+public class GoogleAuthService implements OauthService {
     @Value("${oauth.google.client-id}")
     private String googleClientId;
     @Value("${oauth.google.client-secret}")
@@ -35,16 +35,13 @@ public class GoogleAuthService implements AuthService {
     }
 
     @Override
-    public Member login(Object loginReqDto) {
-        RedirectDto dto = (RedirectDto) loginReqDto;
-
+    public Member login(OauthLoginDto oauthLoginDto) {
         // accessToken 발급
-        AccessTokenDto accessTokenDto = getAccessToken(dto.getCode());
+        AccessTokenDto accessTokenDto = getAccessToken(oauthLoginDto.getCode());
         // 사용자 정보 얻기
         GoogleProfileDto googleProfileDto = getGoogleProfile(accessTokenDto.getAccess_token());
-
+        // 사용자 없으면 회원가입까지 수행
         Member originalMember = memberRepository.findBySocialId(googleProfileDto.getSub()).orElse(null);
-
         if(originalMember == null) {
             MemberOauthCreateReqDto memberOauthCreateReqDto = MemberOauthCreateReqDto.builder()
                     .email(googleProfileDto.getEmail())
@@ -56,7 +53,6 @@ public class GoogleAuthService implements AuthService {
 
         return originalMember;
     }
-
 
     public AccessTokenDto getAccessToken(String code) {
         // 인가코드, clientId, client_secret redirect_uri, grant_type

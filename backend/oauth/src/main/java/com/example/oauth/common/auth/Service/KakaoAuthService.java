@@ -3,9 +3,9 @@ package com.example.oauth.common.auth.Service;
 import com.example.oauth.member.domain.Member;
 import com.example.oauth.member.domain.SocialType;
 import com.example.oauth.member.dto.AccessTokenDto;
-import com.example.oauth.member.dto.KakaoProfileDto;
+import com.example.oauth.common.auth.dto.KakaoProfileDto;
 import com.example.oauth.member.dto.MemberOauthCreateReqDto;
-import com.example.oauth.member.dto.RedirectDto;
+import com.example.oauth.common.auth.dto.OauthLoginDto;
 import com.example.oauth.member.repository.MemberRepository;
 import com.example.oauth.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
-@Service
-public class KakaoAuthService implements AuthService {
+@Service("kakao")
+public class KakaoAuthService implements OauthService {
     @Value("${oauth.kakao.client-id}")
     private String kakaoClientId;
     @Value("${oauth.kakao.redirect-uri}")
@@ -33,16 +33,13 @@ public class KakaoAuthService implements AuthService {
     }
 
     @Override
-    public Member login(Object loginReqDto) {
-        RedirectDto dto = (RedirectDto) loginReqDto;
-        
+    public Member login(OauthLoginDto oauthLoginDto) {
         // accessToken 발급
-        AccessTokenDto accessTokenDto = getAccessToken(dto.getCode());
+        AccessTokenDto accessTokenDto = getAccessToken(oauthLoginDto.getCode());
         // 사용자 정보 얻기
         KakaoProfileDto kakaoProfileDto = getKakaoProfile(accessTokenDto.getAccess_token());
-
+        // 사용자 없으면 회원가입까지 수행
         Member originalMember = memberRepository.findBySocialId(kakaoProfileDto.getId()).orElse(null);
-
         if(originalMember == null) {
             MemberOauthCreateReqDto memberOauthCreateReqDto = MemberOauthCreateReqDto.builder()
                     .email(kakaoProfileDto.getKakao_account().getEmail())

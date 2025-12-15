@@ -24,5 +24,7 @@ public class MemberController {
         Member member = memberService.create(memberEmailCreateReqDto);
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
     }
+
+    // 원래는 조회, 수정, 삭제 필요
 }
 

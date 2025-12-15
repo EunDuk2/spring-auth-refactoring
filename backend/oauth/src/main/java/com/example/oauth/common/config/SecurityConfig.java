@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 .accessDeniedHandler(jwtAuthorizationHandler) // 403의 경우
                 )
 
-                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/member/doLogin", "/auth/**", "/member/google/doLogin", "/member/kakao/doLogin").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(a -> a.requestMatchers("/member/create", "/auth/email", "/oauth/google", "/oauth/kakao").permitAll().anyRequest().authenticated())
                 .build();
     }
     // Todo - 프론트 연결
