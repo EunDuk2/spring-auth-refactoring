@@ -2,7 +2,7 @@ package com.example.oauth.member.controller;
 
 import com.example.oauth.common.auth.original.JwtTokenProvider;
 import com.example.oauth.member.domain.Member;
-import com.example.oauth.member.dto.*;
+import com.example.oauth.member.dto.MemberEmailCreateReqDto;
 import com.example.oauth.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

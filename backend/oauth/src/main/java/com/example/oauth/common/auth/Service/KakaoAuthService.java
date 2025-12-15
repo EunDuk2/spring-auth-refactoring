@@ -2,7 +2,10 @@ package com.example.oauth.common.auth.Service;
 
 import com.example.oauth.member.domain.Member;
 import com.example.oauth.member.domain.SocialType;
-import com.example.oauth.member.dto.*;
+import com.example.oauth.member.dto.AccessTokenDto;
+import com.example.oauth.member.dto.KakaoProfileDto;
+import com.example.oauth.member.dto.MemberOauthCreateReqDto;
+import com.example.oauth.member.dto.RedirectDto;
 import com.example.oauth.member.repository.MemberRepository;
 import com.example.oauth.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
