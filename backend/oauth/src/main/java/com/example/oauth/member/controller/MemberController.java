@@ -2,11 +2,10 @@ package com.example.oauth.member.controller;
 
 import com.example.oauth.common.auth.original.JwtTokenProvider;
 import com.example.oauth.member.domain.Member;
-import com.example.oauth.member.domain.SocialType;
 import com.example.oauth.member.dto.*;
 import com.example.oauth.member.service.GoogleService;
 import com.example.oauth.member.service.KakaoService;
-import com.example.oauth.member.service.MemberServiceImpl;
+import com.example.oauth.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
     // 각 구현체들의 역할 적어보기
 
-    private final MemberServiceImpl memberServiceImpl;
+    private final MemberService memberService;
     // 사용자 정보로 회원가입, 사용자 로그인 정보 검증, SocialId로 사용자 정보 조회, Oauth로 로그인 했을 때 회원가입
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -38,7 +34,7 @@ public class MemberController {
 
     @PostMapping("/create")
     public ResponseEntity<?> memberCreate(@RequestBody MemberEmailCreateReqDto memberEmailCreateReqDto)  {
-        Member member = memberServiceImpl.create(memberEmailCreateReqDto);
+        Member member = memberService.create(memberEmailCreateReqDto);
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
     }
 
